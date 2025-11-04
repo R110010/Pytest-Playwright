@@ -1,0 +1,101 @@
+DAY 1 — Launching browsers, Pytest fixtures, page vs context
+Goal
+Understand launching browsers from pytest, fixtures lifecycle, and difference between page and context.
+Step-by-step practice
+Read/skim Playwright fixture concept (locally): what browser, context, page represent.
+
+
+Create the conftest.py above and run pytest -q to see fixture usage.
+
+
+Make a simple test:
+
+ def test_open_home(page):
+    page.goto("https://playwright.dev")
+    assert "Playwright" in page.title()
+
+
+Experiment: open multiple pages in same context (simulate multiple tabs). Then create a new context for isolated cookies/storage.
+
+
+Try launching headless vs headed and observe performance.
+
+
+Exercises
+Write tests that open two pages in same context and assert cookies are shared.
+
+
+Write tests using two different contexts to show isolation.
+
+
+18 Interview Qs (Day 1)
+Q: What is Playwright?
+ A: A browser automation library for Chromium/Firefox/WebKit supporting modern web features and cross-browser automation.
+
+
+Q: What’s the difference between browser, context, and page?
+ A: browser = the browser process; context = an isolated browser session (cookies, localStorage); page = a single tab/frame within a context.
+
+
+Q: Why use multiple contexts?
+ A: To isolate sessions (different users, different storage/cache); useful in parallel tests.
+
+
+Q: When to reuse a context vs create a new one?
+ A: Reuse for speed if tests can share state. Create new to avoid state bleed between tests.
+
+
+Q: What is a Pytest fixture and why use it with Playwright?
+ A: A fixture provides setup/teardown for tests (e.g., creating browser/page). It makes tests clean and reusable.
+
+
+Q: What fixture scope options exist and when to use them?
+ A: function, class, module, session — use session for expensive setup like browser launch in CI, function for isolated pages.
+
+
+Q: How do you run Playwright tests headless?
+ A: Launch the browser with headless=True or set env var. In pytest-playwright, set config or use CLI flags.
+
+
+Q: How to capture console logs from a page?
+ A: Listen to page.on("console", handler) and collect messages.
+
+
+Q: What are advantages of new_context()?
+ A: Fast session-level isolation without launching a new browser.
+
+
+Q: Can you run tests in parallel?
+ A: Yes with pytest-xdist and separate contexts (or playwright test runner). Ensure tests are isolated.
+
+
+Q: What’s Playwright’s default timeout?
+ A: Typically 30 seconds; adjustable via options like page.set_default_timeout().
+
+
+Q: How to debug a failing test locally?
+ A: Run headed (headless=False), add page.pause(), use playwright codegen, or add page.screenshot().
+
+
+Q: What happens if you don’t close a context?
+ A: Resource leak: browser may hold memory and cause flakiness or exhaustion.
+
+
+Q: Why prefer contexts over separate browser instances?
+ A: Contexts are lighter weight and faster to create than full browser processes.
+
+
+Q: How do you persist storage across contexts?
+ A: Use storage_state option to save and reuse cookies/localStorage.
+
+
+Q: What is storage_state?
+ A: JSON file with cookies and localStorage that can be used to create authenticated contexts.
+
+
+Q: How to test file downloads in Playwright?
+ A: Use page.expect_download() context manager and then download.path().
+
+
+Q: What is the Playwright CLI playwright install for?
+ A: Installs browser binaries required for automation.

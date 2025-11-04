@@ -1,0 +1,23 @@
+Common fixture (single-file example)
+Put this in tests/conftest.py (sync example). You can also use the pytest-playwright plugin which already provides page and browser fixtures.
+# conftest.py
+import pytest
+from playwright.sync_api import sync_playwright
+
+@pytest.fixture(scope="session")
+def browser_context():
+    pw = sync_playwright().start()
+    browser = pw.chromium.launch(headless=False)  # headless=True in CI
+    context = browser.new_context()
+    yield context
+    context.close()
+    browser.close()
+    pw.stop()
+
+@pytest.fixture(scope="function")
+def page(browser_context):
+    page = browser_context.new_page()
+    yield page
+    page.close()
+
+Use page in tests: def test_example(page): page.goto("https://demo.playwright.dev") ...

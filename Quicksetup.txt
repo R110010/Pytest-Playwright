@@ -1,0 +1,11 @@
+Quick setup (before Day 1)
+Install Playwright and Pytest:
+ pip install pytest playwright
+ playwright install
+ (or use pip install pytest-playwright and follow that plugin’s docs).
+
+
+Create a project folder, a tests/ directory and a conftest.py for fixtures (example below).
+
+
+Pick practice sites: Playwright Demo (https://playwright.dev/playwright-test/) and Rahul Shetty Automation Practice (forms/tables).
